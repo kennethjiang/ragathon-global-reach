@@ -352,14 +352,21 @@ def translate_text(text, target_language='fr'):
 
     return translated_text
 
-def text_to_speech(text, language_code='fr-FR', speaking_rate=1.0):
+def get_all_gender():
+    return [
+      {'gender': texttospeech.SsmlVoiceGender.NEUTRAL, 'name': 'Neutral'},
+      {'gender': texttospeech.SsmlVoiceGender.FEMALE, 'name': 'Female'},
+      {'gender': texttospeech.SsmlVoiceGender.MALE, 'name': 'Male'},
+    ]
+
+def text_to_speech(text, language_code='fr-FR', speaking_rate=1.0, gender=texttospeech.SsmlVoiceGender.NEUTRAL):
     client = texttospeech.TextToSpeechClient()
 
     synthesis_input = texttospeech.SynthesisInput(text=text)
 
     voice = texttospeech.VoiceSelectionParams(
         language_code=language_code,
-        ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
+        ssml_gender=gender
     )
 
     audio_config = texttospeech.AudioConfig(
@@ -530,7 +537,7 @@ from google.cloud import texttospeech
 import pygame
 from pydub import AudioSegment
 
-def combined_audio(sentences_with_timestamps, target_language='fr', language_code='fr-FR', speaking_rate=1.0):
+def combined_audio(sentences_with_timestamps, target_language='fr', language_code='fr-FR', speaking_rate=1.0, gender=texttospeech.SsmlVoiceGender.NEUTRAL):
   total_duration = calculate_duration(sentences_with_timestamps)
 
   # Calculate total duration (assuming this has been done as in the previous example)
@@ -548,7 +555,7 @@ def combined_audio(sentences_with_timestamps, target_language='fr', language_cod
 
       print(french_translation)
       # Convert French translation to speech
-      audio_content = text_to_speech(french_translation, language_code=language_code, speaking_rate=speaking_rate)
+      audio_content = text_to_speech(french_translation, language_code=language_code, speaking_rate=speaking_rate, gender=gender)
 
       # Create an AudioSegment from the speech audio content
       sentence_audio = AudioSegment.from_mp3(io.BytesIO(audio_content))

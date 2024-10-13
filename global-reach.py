@@ -11,6 +11,7 @@ def main(video_url):
         print("Invalid YouTube URL. Could not extract video ID.")
 
     lang = select_language()
+    gender = select_gender()
 
     # Load the SRT file
     subs = load_first_subtitle()
@@ -31,7 +32,7 @@ def main(video_url):
 
     sentences_with_timestamps1 = get_sentences_with_timestamps(sentences_with_indices1, updated_subs_array1)
 
-    base_audio = combined_audio(sentences_with_timestamps1, target_language=lang['lang_target'], language_code=lang['lang_code'], speaking_rate=1.5)
+    base_audio = combined_audio(sentences_with_timestamps1, target_language=lang['lang_target'], language_code=lang['lang_code'], speaking_rate=1.3, gender=gender['gender'])
     # After creating and processing base_audio
     output_filename = "output_audio.mp3"
     base_audio.export(output_filename, format="mp3")
@@ -54,6 +55,22 @@ def select_language():
             selection = int(input("\nEnter the number of your desired language: "))
             if 0 <= selection < len(all_languages):
                 return all_languages[selection]
+            else:
+                print("Invalid selection. Please try again.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+def select_gender():
+    all_genders = get_all_gender()
+
+    for index, gender in enumerate(all_genders):
+        print(f"{index}: {gender['name']}")
+
+    while True:
+        try:
+            selection = int(input("\nEnter the number of your desired gender: "))
+            if 0 <= selection < len(all_genders):
+                return all_genders[selection]
             else:
                 print("Invalid selection. Please try again.")
         except ValueError:
