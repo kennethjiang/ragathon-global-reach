@@ -1,0 +1,17 @@
+.DS_Store
+*.pyc
+.env
+.vscode
+/venv
+obico-server/
+env/
+chroma_langchain_db/
+chat_app/memory.db
+chat_app/db.sqlite3
+data/
+chroma_db/
+storage/
+*.srt
+transcript.*
+*.mkv
+*.mp3
